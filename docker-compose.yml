@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=teacher
+      - POSTGRES_PASSWORD=teacher
+      - POSTGRES_DB=teacheraccess
+    volumes:
+      - teacheraccess_pg_data:/bitnami/postgresql
+
+volumes:
+  teacheraccess_pg_data:
