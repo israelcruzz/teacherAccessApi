@@ -15,18 +15,21 @@ model Teacher {
   name     String
   email    String    @unique
   password String
+  imageId  String?
   students Student[]
 
   @@map("teacher")
 }
 
 model Student {
-  id        String @id @unique @default(uuid())
+  id        String  @id @unique @default(uuid())
   name      String
-  email     String @unique
+  email     String  @unique
   teacherId String
   courseId  String
+  imageId   String? @unique
 
+  image   Image?  @relation(fields: [imageId], references: [id])
   course  Course  @relation(fields: [courseId], references: [id])
   teacher Teacher @relation(fields: [teacherId], references: [id])
 
@@ -39,4 +42,11 @@ model Course {
   students Student[]
 
   @@map("course")
+}
+
+model Image {
+  id   String @id @unique @default(uuid())
+  path String
+
+  student Student?
 }
