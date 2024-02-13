@@ -14,6 +14,16 @@ class CourseRepository {
 
     return course;
   }
+
+  async show(name: string){
+    const course = await prisma.course.findFirst({
+      where: {
+        name
+      }
+    })
+
+    return course
+  }
 }
 
 export default new CourseRepository();

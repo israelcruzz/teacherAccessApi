@@ -16,6 +16,12 @@ class CourseController {
 
     const { name } = storeSchema.parse(request.body);
 
+    const courseExist = await CourseRepository.show(name)
+
+    if(courseExist){
+      return response.send(404).json({ error: "Name in use" })
+    }
+
     const newCourse = await CourseRepository.store(name);
 
     return response.json(newCourse);
