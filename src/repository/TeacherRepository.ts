@@ -14,7 +14,11 @@ interface TeacherProps {
 
 class TeacherRepository {
   async index() {
-    return await prisma.teacher.findMany();
+    return await prisma.teacher.findMany({
+      include: {
+        students: true
+      }
+    });
   }
 
   async store({ name, email, hashpassword }: TeacherRepositoryProps) {
