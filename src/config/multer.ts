@@ -10,4 +10,4 @@ export const storage = multer.diskStorage({
 
     callback(null, `${time}_${file.originalname}`);
   },
-})
+});

@@ -9,13 +9,23 @@ interface StudentProps {
 }
 
 class StudentRepository {
-  async index(orderBy: any, courseId: string, teacherId: string) {
+  async index(orderBy: any, courseId: any, teacherId: string) {
     if (courseId === "all") {
       return await prisma.student.findMany({
         where: {
           teacherId,
         },
-        orderBy,
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        },
+        orderBy: {
+          name: orderBy
+        }
       });
     } else {
       return await prisma.student.findMany({
@@ -23,17 +33,28 @@ class StudentRepository {
           teacherId,
           courseId,
         },
-        orderBy,
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        },
+        orderBy: {
+          name: orderBy
+        }
       });
     }
   }
 
-  async show(name: string) {
+  async show(name: string, teacherId: string) {
     await prisma.student.findMany({
       where: {
-        name
-      }
-    })
+        name,
+        teacherId,
+      },
+    });
   }
 
   async store({ name, email, courseId, id }: StudentProps) {
@@ -43,6 +64,14 @@ class StudentRepository {
         email,
         courseId,
         teacherId: id,
+      },
+      include: {
+        course: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       },
     });
 
@@ -60,16 +89,23 @@ class StudentRepository {
         email,
         courseId,
       },
+      include: {
+        course: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
     });
 
     return student;
   }
 
-  async delete(id: string, teacherId: string) {
-    await prisma.student.delete({
+  async delete(id: string) {
+    return await prisma.student.delete({
       where: {
         id,
-        teacherId
       },
     });
   }

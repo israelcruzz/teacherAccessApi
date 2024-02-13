@@ -18,10 +18,10 @@ route.get("/teacher", TeacherController.index);
 route.delete("/teacher", TeacherController.delete);
 route.put("/teacher", TeacherController.update);
 
-route.get("/student");
+route.get("/student", StudentController.index);
 route.post("/student", StudentController.store);
-route.delete("/student/:id");
-route.put("/student/:studentId", upload.single("image"));
+route.delete("/student/:studentId", StudentController.delete);
+route.put("/student/:studentId", StudentController.update);
 
 route.get("/course", CourseController.index);
 route.post("/course", CourseController.store);

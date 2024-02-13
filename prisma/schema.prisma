@@ -24,7 +24,7 @@ model Teacher {
 model Student {
   id        String @id @unique @default(uuid())
   name      String
-  email     String @unique
+  email     String 
   teacherId String
   courseId  String
   image     String? @unique

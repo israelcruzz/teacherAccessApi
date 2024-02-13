@@ -16,8 +16,8 @@ class TeacherRepository {
   async index() {
     return await prisma.teacher.findMany({
       include: {
-        students: true
-      }
+        students: true,
+      },
     });
   }
 
@@ -82,7 +82,7 @@ class TeacherRepository {
       },
     });
 
-    return teacher
+    return teacher;
   }
 }
 
