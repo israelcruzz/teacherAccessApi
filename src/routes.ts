@@ -5,6 +5,7 @@ import multer from "multer";
 import TeacherController from "./controllers/TeacherController";
 import StudentController from "./controllers/StudentController";
 import CourseController from "./controllers/CourseController";
+import LeasonController from "./controllers/LeasonController";
 
 const upload = multer({ storage: storage });
 const route = Router();
@@ -25,5 +26,7 @@ route.put("/student/:studentId", StudentController.update);
 
 route.get("/course", CourseController.index);
 route.post("/course", CourseController.store);
+
+route.post("/leason", LeasonController.send)
 
 export default route;

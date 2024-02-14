@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CourseRepository from "../repository/CourseRepositorie";
+import CourseRepository from "../repository/CourseRepositoriy";
 import { z } from "zod";
 
 class CourseController {

@@ -28,38 +28,37 @@ export const auth = async (
 
   if (!authorization) {
     return response
-      .status(400)
-      .json({ error: "You do not have authorization" });
+      .status(401)
+      .json({ error: "Authorization header is missing" });
   }
 
   const [, token] = authorization.split(" ");
 
-  const { id, email } = jwt.verify(token, "secret_key") as JwtPayload;
+  try {
+    const decodedToken = jwt.verify(token, "secret_key") as JwtPayload;
 
-  const teacher = await prisma.teacher.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-    },
-  });
+    const { id, email } = decodedToken;
 
-  if (!teacher) {
-    return response
-      .status(400)
-      .json({ error: "You do not have authorization" });
+    const teacher = await prisma.teacher.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+
+    if (!teacher || teacher.email !== email) {
+      throw new Error("Invalid token or user not found");
+    }
+
+    request.teacher = teacher;
+
+    next();
+  } catch (error) {
+    console.error("Error while verifying JWT token:", error);
+    return response.status(401).json({ error: "Invalid or expired token" });
   }
-
-  if (teacher.email !== email) {
-    return response
-      .status(400)
-      .json({ error: "You do not have authorization" });
-  }
-
-  request.teacher = teacher;
-
-  next();
 };
