@@ -6,6 +6,7 @@ interface StudentProps {
   courseId: string;
   id: string;
   teacherId?: string;
+  path?: string;
 }
 
 class StudentRepository {
@@ -19,13 +20,13 @@ class StudentRepository {
           course: {
             select: {
               id: true,
-              name: true
-            }
-          }
+              name: true,
+            },
+          },
         },
         orderBy: {
-          name: orderBy
-        }
+          name: orderBy,
+        },
       });
     } else {
       return await prisma.student.findMany({
@@ -37,13 +38,13 @@ class StudentRepository {
           course: {
             select: {
               id: true,
-              name: true
-            }
-          }
+              name: true,
+            },
+          },
         },
         orderBy: {
-          name: orderBy
-        }
+          name: orderBy,
+        },
       });
     }
   }
@@ -57,28 +58,29 @@ class StudentRepository {
     });
   }
 
-  async store({ name, email, courseId, id }: StudentProps) {
+  async store({ name, email, courseId, id, path }: StudentProps) {
     const newStudent = await prisma.student.create({
       data: {
         name,
         email,
         courseId,
         teacherId: id,
+        image: path,
       },
       include: {
         course: {
           select: {
             id: true,
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
       },
     });
 
     return newStudent;
   }
 
-  async update({ name, email, courseId, id, teacherId }: StudentProps) {
+  async update({ name, email, courseId, id, teacherId, path }: StudentProps) {
     const student = await prisma.student.update({
       where: {
         id,
@@ -88,14 +90,15 @@ class StudentRepository {
         name,
         email,
         courseId,
+        image: path,
       },
       include: {
         course: {
           select: {
             id: true,
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
       },
     });
 

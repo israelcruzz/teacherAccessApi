@@ -20,9 +20,9 @@ route.delete("/teacher", TeacherController.delete);
 route.put("/teacher", TeacherController.update);
 
 route.get("/student", StudentController.index);
-route.post("/student", StudentController.store);
+route.post("/student", upload.single('image'), StudentController.store);
 route.delete("/student/:studentId", StudentController.delete);
-route.put("/student/:studentId", StudentController.update);
+route.put("/student/:studentId", upload.single('image'), StudentController.update);
 
 route.get("/course", CourseController.index);
 route.post("/course", CourseController.store);

@@ -32,14 +32,20 @@ class StudentController {
       id: z.string().uuid(),
     });
 
+    const storeSchemaFile = z.object({
+      path: z.string(),
+    });
+
     const { name, email, courseId } = storeSchemaBody.parse(request.body);
     const { id } = storeSchemaTeacher.parse(request.teacher);
+    const { path } = storeSchemaFile.parse(request.file);
 
     const student = await StudentRepository.store({
       name,
       email,
       courseId,
       id,
+      path,
     });
 
     return response.json(student);
@@ -77,9 +83,14 @@ class StudentController {
       id: z.string().uuid(),
     });
 
+    const updateSchemaFile = z.object({
+      path: z.string(),
+    });
+
     const { studentId } = updateSchemaParams.parse(request.params);
     const { name, email, courseId } = updateSchemaBody.parse(request.body);
     const { id } = updateSchemaTeacher.parse(request.teacher);
+    const { path } = updateSchemaFile.parse(request.file);
 
     const studantExist = await StudentRepository.findStudentByIdAndTeacherId(
       studentId,
@@ -96,6 +107,7 @@ class StudentController {
       courseId,
       id: studentId,
       teacherId: id,
+      path,
     });
 
     return response.json(student);

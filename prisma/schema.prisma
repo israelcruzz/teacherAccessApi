@@ -22,9 +22,9 @@ model Teacher {
 }
 
 model Student {
-  id        String @id @unique @default(uuid())
+  id        String  @id @unique @default(uuid())
   name      String
-  email     String 
+  email     String
   teacherId String
   courseId  String
   image     String? @unique
